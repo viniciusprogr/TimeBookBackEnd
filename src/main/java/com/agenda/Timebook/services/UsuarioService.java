@@ -16,10 +16,13 @@ public class UsuarioService {
     @Transactional
     public UsuarioEntity cadastrarUsuario(UsuarioEntity usuarioEntity){
        if (vericaEmailExistente(usuarioEntity.getEmail())){
-
            return usuarioRepository.save(usuarioEntity);
-
        }else throw new RuntimeException("Email já cadastrado");
+    }
+
+    @Transactional
+    public UsuarioEntity atualizarUsuario(UsuarioEntity usuarioEntity){
+        return usuarioRepository.save(usuarioEntity);
     }
 
     public boolean vericaEmailExistente(String email) {
@@ -29,5 +32,13 @@ public class UsuarioService {
         } else {
             return false;
         }
+    }
+
+    public UsuarioEntity buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    public void deletarUsuario(UsuarioEntity usuarioEncontrado) {
+        usuarioRepository.delete(usuarioEncontrado);
     }
 }

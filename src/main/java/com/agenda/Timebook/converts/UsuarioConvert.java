@@ -1,6 +1,7 @@
 package com.agenda.Timebook.converts;
 
 import com.agenda.Timebook.configs.ModelMapperConfig;
+import com.agenda.Timebook.dtos.input.UsuarioInput;
 import com.agenda.Timebook.dtos.output.UsuarioOutput;
 import com.agenda.Timebook.entitites.UsuarioEntity;
 import org.modelmapper.ModelMapper;
@@ -19,5 +20,9 @@ public class UsuarioConvert {
 
     public UsuarioOutput entityToOutput(UsuarioEntity usuarioCadastrado) {
     return modelMapper.map(usuarioCadastrado, UsuarioOutput.class);
+    }
+
+    public void copyToEntity(UsuarioInput usuarioInput, UsuarioEntity usuarioEncontrado) {
+        modelMapper.map(usuarioInput, usuarioEncontrado);
     }
 }

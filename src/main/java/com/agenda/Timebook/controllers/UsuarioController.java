@@ -7,10 +7,7 @@ import com.agenda.Timebook.entitites.UsuarioEntity;
 import com.agenda.Timebook.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -28,5 +25,25 @@ public class UsuarioController {
         UsuarioEntity usuarioEntity = usuarioConvert.inputToEntity(usuarioInput);
         UsuarioEntity usuarioCadastrado = usuarioService.cadastrarUsuario(usuarioEntity);
         return usuarioConvert.entityToOutput(usuarioCadastrado);
+    }
+
+    @RequestMapping("/remover/{id}")
+    public void removerUsuario(@PathVariable Long id){
+        UsuarioEntity usuarioEncontrado = usuarioService.buscarPorId(id);
+        usuarioService.deletarUsuario(usuarioEncontrado);
+    }
+
+    @RequestMapping("/buscarPorId/{id}")
+    public UsuarioOutput buscarPorId(@PathVariable Long id){
+        UsuarioEntity usuarioEncontrado = usuarioService.buscarPorId(id);
+        return usuarioConvert.entityToOutput(usuarioEncontrado);
+    }
+
+    @PutMapping("/atualizar/{id}")
+    public UsuarioOutput atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioInput usuarioInput){
+        UsuarioEntity usuarioEncontrado = usuarioService.buscarPorId(id);
+        usuarioConvert.copyToEntity(usuarioInput, usuarioEncontrado);
+        UsuarioEntity usuarioAtualizado = usuarioService.atualizarUsuario(usuarioEncontrado);
+        return usuarioConvert.entityToOutput(usuarioAtualizado);
     }
 }
